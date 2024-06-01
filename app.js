@@ -2,12 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
 
 const { URL } = require('./models');
 
 const app = express();
 
-const port =  process.env.port || 3000;
+const port =  process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -15,12 +16,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 async function connectDB() {
     try {
-      await mongoose.connect('mongodb://localhost:27017/urlShortener');
-      console.log("MongoDB connection Succesful.");
+        const mongo_DB = process.env.MONGO_DB;
+        await mongoose.connect(mongo_DB);
+        console.log("MongoDB connection Succesful.");
     } catch (error) {
-      console.error("MongoDB connection error:", error);
+        console.error("MongoDB connection error:", error);
     }
-  }
+}
 
 
 connectDB();
